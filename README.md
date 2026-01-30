@@ -1,2 +1,2 @@
 # 4-Bit-CPU
-A from-scratch 4-bit CPU demonstrating core processor concepts like instruction decoding, registers, arithmetic logic, and program flow. Built for learning, experimentation, and future expansion.
+This repository contains a custom-built 4-bit CPU designed to explore how processors work at the lowest level. The CPU implements a simple instruction set with registers, an ALU, a program counter, and control logic, making it possible to trace every instruction cycle-by-cycle. The focus is on clarity and learnability rather than performance, serving as a foundation for understanding and building more advanced CPU designs.
