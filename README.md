@@ -6,6 +6,10 @@ Watch the Demo Video above!
 
 This repository contains a custom-built 4-bit CPU designed to explore how processors work at the lowest level. The CPU implements a simple instruction set with registers, an ALU, a program counter, and control logic, making it possible to trace every instruction cycle-by-cycle. The focus is on clarity and learnability rather than performance, serving as a foundation for understanding and building more advanced CPU designs.
 
+I made this CPU when I was in 5th grade so these CPUs work but barely :(
+
+These CPUs need a lot of improvement so I made a bunch of other versions and my newest 8-bit one is in another repository.
+
 ## SRC folder stuff
 
 - Arduino code for the ROM simulator
