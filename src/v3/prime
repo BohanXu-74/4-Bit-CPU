@@ -1,0 +1,264 @@
+ADR
+
+mov R0,0
+mov R1,0
+mov R2,0
+
+#data 1
+
+mov R3,0
+mov R4,0
+mov R5,0
+mov R6,0
+
+#Data 2
+
+mov R7,0
+mov R8,0
+mov R9,0
+mov R10,0
+
+REGS:
+
+mov R11,0
+mov R12,1
+mov R13,4
+mov R14,15
+mov R15,7
+
+*************setup**************
+
+***********setup RAM 0-3 as storage for currently tested num********************
+
+mov R3,3
+mov R3->A
+mov R0,0
+mov A-> ADR
+
+mov R4->A
+mov R0,1
+mov A-> ADR
+
+mov R5->A
+mov R0,2
+mov A-> ADR
+
+mov R6->A
+mov R0,3
+mov A-> ADR
+
+***********moving EEPROM Digit to Data 2 **************************
+
+mov R0,4
+mov R1,0				**moving info into ADR to collect the first num
+mov R2,1
+
+********** jmps start now********************************
+start: 0x80
+mov ADR -> A
+mov A -> R7
+jmp add_address
+mov ADR -> A
+mov A -> R8
+jmp add_address
+mov ADR -> A
+mov A -> R9                  
+jmp add_address
+mov ADR -> A
+mov A -> R10
+jmp add_address
+
+*****************************divides to see whether prime or not********************
+****************ones place******************************
+
+sub R3-R7 = R3
+JB if carry = 1: done1
+sub R4 - R12 = R4
+add R3 + R14 = R3
+add R3 + R12 = R3
+JB if carry = 1: done1
+sub R5 - R12 = R5
+add R4 + R14 = R4
+add R4 + R12 = R4
+JB if carry = 1: done1
+sub R6 - R12 = R6
+add R5 + R14 = R5
+add R5 + R12 = R5
+JB if carry = 0: comp
+
+****************10 place*******************************
+
+done1:
+
+sub R4-R8 = R3
+JB if carry = 1: done2
+sub R5 - R12 = R5
+add R4 + R14 = R4
+add R4 + R12 = R4
+JB if carry = 1: done2
+sub R6 - R12 = R6
+add R5 + R14 = R5
+add R5 + R12 = R5
+JB if carry = 0: comp
+
+*****************************100 place******************************
+
+done2:
+
+sub R5-R9 = R3
+JB if carry = 1: done3
+sub R6 - R12 = R6
+add R5 + R14 = R5
+add R5 + R12 = R5
+JB if carry = 0: comp
+
+*************************1000s place*******************************
+
+done3:
+
+sub R6-R10 = R3
+JB if carry = 0: comp
+
+***************************************************
+cmp R0 to R15: YES!
+jmp next
+cmp R1 to R11: HA!
+jmp next
+cmp R2 to R12: PRIME
+
+*******************************if not done yet********************************
+
+next:
+
+jmp add_address
+sub R0-R13 = R3
+JB if carry = 1: done4
+sub R1 - R12 = R1
+add R0 + R14 = R0
+add R0 + R12 = R0
+JB if carry = 1: done4
+sub R2 - R12 = R2
+add R1 + R14 = R1
+add R1 + R12 = R1
+JB if carry = 0: GAME OVER
+jmp start
+
+******************** if not prime number *******************************
+comp:
+jmp add_address
+sub R0-R13 = R3
+JB if carry = 1: done5
+sub R1 - R12 = R1
+add R0 + R14 = R0
+add R0 + R12 = R0
+JB if carry = 1: done5
+sub R2 - R12 = R2
+add R1 + R14 = R1
+add R1 + R12 = R1
+JB if carry = 0: GAME OVER
+
+done5: 
+
+ADD R3 + R12 = R3
+JB if carry = 0 : done6
+ADD R4 + R12 = R4
+JB if carry = 0 : done6
+ADD R5 + R12 = R5
+JB if carry = 0 : done6
+ADD R6 + R12 = R6
+done6:
+jmp start
+
+************************if it is PRIME!!!**************************************
+PRIME:
+
+mov R0 -> R11
+mov R1 -> R12
+mov R2 -> R13
+
+add R0 + R12 = R0
+JB if carry = 0: done7
+add R1 + R12 = R1
+JB if carry = 0: done7
+add R2 + R12 = R2
+done7:
+
+mov R3 -> A
+mov A -> ADR
+jmp add_address
+mov R4 -> A
+mov A -> ADR
+jmp add_address
+mov R5 -> A
+mov A -> ADR
+jmp add_address
+mov R6 -> A
+mov A -> ADR
+jmp add_address
+
+ADD R3 + R12 = R3
+JB if carry = 0 : done8
+ADD R4 + R12 = R4
+JB if carry = 0 : done8
+ADD R5 + R12 = R5
+JB if carry = 0 : done8
+ADD R6 + R12 = R6
+done8:
+
+jmp add_address
+sub R0-R13 = R3
+JB if carry = 1: done9
+sub R1 - R12 = R1
+add R0 + R14 = R0
+add R0 + R12 = R0
+JB if carry = 1: done9
+sub R2 - R12 = R2
+add R1 + R14 = R1
+add R1 + R12 = R1
+JB if carry = 0: GAME OVER
+
+done9:
+
+jmp start
+
+
+*****************************functions************************************************
+
+add_address:
+ADD R0 + R12 = R0
+JB if carry = 0 : done       ******jmps to position done if carry is = 0********
+ADD R1 + R12 = R1
+JB if carry = 0 : done
+ADD R2 + R12 = R2
+JB if carry = 0 : GAME OVER
+ret
+
+GAME OVER:
+blank
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
